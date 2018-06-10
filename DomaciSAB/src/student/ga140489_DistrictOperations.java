@@ -17,10 +17,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import operations.DistrictOperations;
 
-/**
- *
- * @author blackdonatello351
- */
 public class ga140489_DistrictOperations implements DistrictOperations {
 
     @Override

@@ -10,10 +10,6 @@ import java.sql.Date;
 import java.util.List;
 import operations.PackageOperations;
 
-/**
- *
- * @author blackdonatello351
- */
 public class ga140489_PackageOperations implements PackageOperations{
 
     @Override

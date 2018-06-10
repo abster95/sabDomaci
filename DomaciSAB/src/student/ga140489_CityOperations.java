@@ -14,10 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import operations.*;
 import DB.DB;
-/**
- *
- * @author blackdonatello351
- */
+
 public class ga140489_CityOperations implements CityOperations  {
 
     @Override

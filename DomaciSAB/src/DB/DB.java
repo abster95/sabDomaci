@@ -11,10 +11,6 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author blackdonatello351
- */
 public class DB {
 
     private static String serverName = "localhost";

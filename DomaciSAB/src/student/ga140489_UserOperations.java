@@ -16,10 +16,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import operations.UserOperations;
 
-/**
- *
- * @author blackdonatello351
- */
 public class ga140489_UserOperations implements UserOperations{
 
     @Override
