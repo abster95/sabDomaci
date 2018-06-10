@@ -67,7 +67,7 @@ public class ga140489_CourierRequestOperation implements CourierRequestOperation
             
             
         } catch (SQLException ex) {
-            Logger.getLogger(ga140489_UserOperations.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ga140489_UserOperations.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
         
         return false;
@@ -103,7 +103,7 @@ public class ga140489_CourierRequestOperation implements CourierRequestOperation
             
             
         } catch (SQLException ex) {
-            Logger.getLogger(ga140489_CourierRequestOperation.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ga140489_CourierRequestOperation.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
         return false;
     }
@@ -158,7 +158,7 @@ public class ga140489_CourierRequestOperation implements CourierRequestOperation
             
             
         } catch (SQLException ex) {
-            Logger.getLogger(ga140489_CourierRequestOperation.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ga140489_CourierRequestOperation.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
         
         return false;
@@ -182,7 +182,7 @@ public class ga140489_CourierRequestOperation implements CourierRequestOperation
             
             
         } catch (SQLException ex) {
-            Logger.getLogger(ga140489_CourierRequestOperation.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ga140489_CourierRequestOperation.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
         
         return result;
@@ -233,7 +233,7 @@ public class ga140489_CourierRequestOperation implements CourierRequestOperation
             
             
         } catch (SQLException ex) {
-            Logger.getLogger(ga140489_CourierRequestOperation.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ga140489_CourierRequestOperation.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
         
         return false;

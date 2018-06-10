@@ -23,20 +23,12 @@ public class DB {
 
     private static Connection connection;
 
-    static {
-        try {
-            connection = DriverManager.getConnection(connectionString);
-        } catch (SQLException ex) {
-            Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     public static Connection getConnection() {
         if (connection == null) {
             try {
                 connection = DriverManager.getConnection(connectionString);
             } catch (SQLException ex) {
-                Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(DB.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             }
         }
         return connection;

@@ -31,7 +31,7 @@ public class ga140489_VehicleOperations implements VehicleOperations{
             
             return (pst.executeUpdate()>0);
         } catch (SQLException ex) {
-            Logger.getLogger(ga140489_VehicleOperations.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ga140489_VehicleOperations.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
         
         return false;
@@ -57,7 +57,7 @@ public class ga140489_VehicleOperations implements VehicleOperations{
                 Statement st = DB.getConnection().createStatement();
                 result = st.executeUpdate(sb.toString());
             } catch (SQLException ex) {
-                Logger.getLogger(ga140489_VehicleOperations.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ga140489_VehicleOperations.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             }
             
         }
@@ -83,7 +83,7 @@ public class ga140489_VehicleOperations implements VehicleOperations{
             
             
         } catch (SQLException ex) {
-            Logger.getLogger(ga140489_VehicleOperations.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ga140489_VehicleOperations.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
         
         
@@ -102,7 +102,7 @@ public class ga140489_VehicleOperations implements VehicleOperations{
             
             return pst.executeUpdate()>0;
         } catch (SQLException ex) {
-            Logger.getLogger(ga140489_VehicleOperations.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ga140489_VehicleOperations.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
         
         return false;
@@ -120,7 +120,7 @@ public class ga140489_VehicleOperations implements VehicleOperations{
             
             return pst.executeUpdate()>0;
         } catch (SQLException ex) {
-            Logger.getLogger(ga140489_VehicleOperations.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ga140489_VehicleOperations.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
         
         return false;

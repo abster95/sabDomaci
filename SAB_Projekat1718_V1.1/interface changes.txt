@@ -1,0 +1,22 @@
+==========================================
+	    interface changes
+==========================================
+
+CourierRequest
+ + grantRequest
+
+==========================================
+
+Vehicle
+ +/- deleteVehicles - return int instead of boolean
+
+==========================================
+Packages 
+ - changeSender
+ -/+ getDeliveryStatus - retrun Integer insead of int.
+ + getAllOffersForPackage
+ +/- acceptOffer() - removed second param (date)
+ +/- getDrive - param is changed to String from int
+ ! getDrive - CHANGE OF MEANING
+ ! driveNextPackage - CHANGE OF RETURN MEANING, (new: -2 in any other case)
+

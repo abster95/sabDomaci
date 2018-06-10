@@ -38,7 +38,7 @@ public class ga140489_CityOperations implements CityOperations  {
             }
             
         } catch (SQLException ex) {
-            Logger.getLogger(ga140489_CityOperations.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ga140489_CityOperations.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
         
         
@@ -65,7 +65,7 @@ public class ga140489_CityOperations implements CityOperations  {
                 Statement st = DB.getConnection().createStatement();
                 result = st.executeUpdate(sb.toString());
             } catch (SQLException ex) {
-                Logger.getLogger(ga140489_CityOperations.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ga140489_CityOperations.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             }
             
         }
@@ -82,7 +82,7 @@ public class ga140489_CityOperations implements CityOperations  {
             Statement st = DB.getConnection().createStatement();
             result = st.executeUpdate("DELETE FROM Grad WHERE GradID=" + i) > 0;
         } catch (SQLException ex) {
-            Logger.getLogger(ga140489_CityOperations.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ga140489_CityOperations.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
         
         return result;
@@ -103,7 +103,7 @@ public class ga140489_CityOperations implements CityOperations  {
             }
             
         } catch (SQLException ex) {
-            Logger.getLogger(ga140489_CityOperations.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ga140489_CityOperations.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
         return cityList;
     }

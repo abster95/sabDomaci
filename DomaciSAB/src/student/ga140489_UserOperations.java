@@ -32,7 +32,7 @@ public class ga140489_UserOperations implements UserOperations{
             pst.setInt(7, 0);
             return (pst.executeUpdate()>0);
         } catch (SQLException ex) {
-            Logger.getLogger(ga140489_UserOperations.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ga140489_UserOperations.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
         
         return false;
@@ -79,7 +79,7 @@ public class ga140489_UserOperations implements UserOperations{
             pst.setString(1, userName);
             return (pst.executeUpdate()>0) ? 0:2;
         } catch (SQLException ex) {
-            Logger.getLogger(ga140489_UserOperations.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ga140489_UserOperations.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
         
         return 2;
@@ -109,7 +109,7 @@ public class ga140489_UserOperations implements UserOperations{
                     result = rs.getInt("BrojPaketa");
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ga140489_CityOperations.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ga140489_CityOperations.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             }
             
         }
@@ -137,7 +137,7 @@ public class ga140489_UserOperations implements UserOperations{
                 Statement st = DB.getConnection().createStatement();
                 result = st.executeUpdate(sb.toString());
             } catch (SQLException ex) {
-                Logger.getLogger(ga140489_UserOperations.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ga140489_UserOperations.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             }
             
         }
@@ -163,7 +163,7 @@ public class ga140489_UserOperations implements UserOperations{
             
             
         } catch (SQLException ex) {
-            Logger.getLogger(ga140489_UserOperations.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ga140489_UserOperations.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
         
         
