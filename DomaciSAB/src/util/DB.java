@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package DB;
+package util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -32,5 +32,9 @@ public class DB {
             }
         }
         return connection;
+    }
+    
+        public static String addQuotes(String str){
+        return "'" + str + "'";
     }
 }

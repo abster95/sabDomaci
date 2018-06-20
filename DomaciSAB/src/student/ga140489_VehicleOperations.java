@@ -5,7 +5,7 @@
  */
 package student;
 
-import DB.DB;
+import util.DB;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -48,7 +48,7 @@ public class ga140489_VehicleOperations implements VehicleOperations{
             for(int i=0; i<strings.length ; i++){
                 if(i!=0)sb.append(",");
                 
-                sb.append("'").append(strings[i]).append("'");
+                sb.append(DB.addQuotes(strings[i]));
             }
             sb.append(")");
         
@@ -67,7 +67,7 @@ public class ga140489_VehicleOperations implements VehicleOperations{
 
     @Override
     public List<String> getAllVehichles() {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         
         
         try {
@@ -77,15 +77,13 @@ public class ga140489_VehicleOperations implements VehicleOperations{
             ResultSet rs = st.executeQuery(sql);
             
             while(rs.next()){
-                String rb = rs.getString("RegBroj");
-                result.add(rb);
+                result.add(rs.getString("RegBroj"));
             }
             
             
         } catch (SQLException ex) {
             Logger.getLogger(ga140489_VehicleOperations.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
-        
         
         return result;
     }

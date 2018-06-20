@@ -5,7 +5,7 @@
  */
 package student;
 
-import DB.DB;
+import util.DB;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,17 +34,12 @@ public class ga140489_CourierOperations implements CourierOperations {
             PreparedStatement pst = DB.getConnection().prepareStatement(sql);
             pst.setString(1, courierUserName);
             
-            
-            
             if(pst.executeUpdate()<=0){
                 return false;
             }
             
             ga140489_UserOperations uo = new ga140489_UserOperations();
             return uo.deleteUsers(courierUserName) > 0;
-            
-            
-            
             
         } catch (SQLException ex) {
             Logger.getLogger(ga140489_CourierOperations.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
@@ -64,8 +59,7 @@ public class ga140489_CourierOperations implements CourierOperations {
             ResultSet rs = pst.executeQuery();
             
             while(rs.next()){
-                String username = rs.getString("KorisnickoIme");
-                courierList.add(username);
+                courierList.add(rs.getString("KorisnickoIme"));
             }
             
         } catch (SQLException ex) {
@@ -81,11 +75,10 @@ public class ga140489_CourierOperations implements CourierOperations {
         try {
             Statement st = DB.getConnection().createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT ko.KorisnickoIme FROM Kurir k INNER JOIN Korisnik ko ON ko.KorisnikID=k.KorisnikID");
+            ResultSet rs = st.executeQuery("SELECT kor.KorisnickoIme FROM Kurir k INNER JOIN Korisnik kor ON kor.KorisnikID=k.KorisnikID");
             
             while(rs.next()){
-                String username = rs.getString("KorisnickoIme");
-                courierList.add(username);
+                courierList.add(rs.getString("KorisnickoIme"));
             }
             
         } catch (SQLException ex) {

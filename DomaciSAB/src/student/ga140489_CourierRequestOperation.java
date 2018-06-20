@@ -5,8 +5,9 @@
  */
 package student;
 
-import DB.DB;
+import util.DB;
 import java.math.BigDecimal;
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -115,6 +116,7 @@ public class ga140489_CourierRequestOperation implements CourierRequestOperation
         try {
             //get userID
             int KorisnikID;
+            int VoziloID;
             String sql = "SELECT KorisnikID FROM Korisnik WHERE KorisnickoIme=?";
             PreparedStatement pst = DB.getConnection().prepareStatement(sql);
             
@@ -128,7 +130,7 @@ public class ga140489_CourierRequestOperation implements CourierRequestOperation
                 return false;
             }
             
-            //get vehicle
+            //get vehicleId
             
             sql = "SELECT VoziloID FROM Vozilo WHERE RegBroj=?";
             pst = DB.getConnection().prepareStatement(sql);
@@ -138,20 +140,14 @@ public class ga140489_CourierRequestOperation implements CourierRequestOperation
             rs = pst.executeQuery();
             
             if(rs.next()){
-                KorisnikID = rs.getInt("KorisnikID");
+                VoziloID = rs.getInt("VoziloID");
             }else{
                 return false;
             }
             
-            
-            
-            
-            
-            
-            
-            sql = "UPDATE ZahtevZaKurira SET RegBroj=? WHERE KorisnikID=?";
+            sql = "UPDATE ZahtevZaKurira SET VoziloID=? WHERE KorisnikID=?";
             pst = DB.getConnection().prepareStatement(sql);
-            pst.setString(1, licencePlateNumber);
+            pst.setInt(1, VoziloID);
             pst.setInt(2, KorisnikID);
             
             return pst.executeUpdate()>0;
@@ -167,7 +163,7 @@ public class ga140489_CourierRequestOperation implements CourierRequestOperation
     @Override
     public List<String> getAllCourierRequests() {
         
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         
         try {
             String sql = "SELECT k.KorisnickoIme  FROM ZahtevZaKurira zzk INNER JOIN Korisnik k ON k.KorisnikID=zzk.KorisnikID";
@@ -176,8 +172,7 @@ public class ga140489_CourierRequestOperation implements CourierRequestOperation
             ResultSet rs = st.executeQuery(sql);
             
             while(rs.next()){
-                String rb = rs.getString("KorisnickoIme");
-                result.add(rb);
+                result.add(rs.getString("KorisnickoIme"));
             }
             
             
@@ -192,6 +187,14 @@ public class ga140489_CourierRequestOperation implements CourierRequestOperation
     public boolean grantRequest(String username) {
         
         try {
+            String sql = "{call dbo.spOdobriZahtevZaKurira(?,?)}";
+            CallableStatement cstmt = DB.getConnection().prepareCall(sql);
+            cstmt.setString(1,username);
+            cstmt.registerOutParameter(2,java.sql.Types.INTEGER);
+            cstmt.execute();
+            return cstmt.getInt(2) == 0;
+            
+            /*
             //get userID
             int KorisnikID,VoziloID;
             String sql = "SELECT zzk.KorisnikID, zzk.VoziloID FROM Korisnik k INNER JOIN ZahtevZaKurira zzk ON zzk.KorisnikID=k.KorisnikID WHERE KorisnickoIme=?";
@@ -229,7 +232,7 @@ public class ga140489_CourierRequestOperation implements CourierRequestOperation
             PreparedStatement st = DB.getConnection().prepareStatement(sql);
             st.setInt(1, KorisnikID);
             
-            return st.executeUpdate()>0;
+            return st.executeUpdate()>0;*/
             
             
         } catch (SQLException ex) {

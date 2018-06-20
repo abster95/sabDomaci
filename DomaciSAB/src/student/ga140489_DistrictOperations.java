@@ -5,7 +5,7 @@
  */
 package student;
 
-import DB.DB;
+import util.DB;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,7 +24,7 @@ public class ga140489_DistrictOperations implements DistrictOperations {
         int key = -1;
         
         try {
-            String sql = "INSERT INTO Opstina(Naziv,XKord,YKord,GradID) VALUES (?,?,?,?)";
+            String sql = "INSERT INTO Opstina(Naziv,GradID,XKord,YKord) VALUES (?,?,?,?)";
             PreparedStatement pst = DB.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             pst.setString(1, name);
             pst.setInt(2, cityId);
@@ -62,7 +62,7 @@ public class ga140489_DistrictOperations implements DistrictOperations {
             for(int i=0; i<strings.length ; i++){
                 if(i!=0)sb.append(",");
                 
-                sb.append("'").append(strings[i]).append("'");
+                sb.append(DB.addQuotes(strings[i]));
             }
             sb.append(")");
         
@@ -114,18 +114,17 @@ public class ga140489_DistrictOperations implements DistrictOperations {
 
     @Override
     public List<Integer> getAllDistrictsFromCity(int i) {
-        List<Integer> result = new ArrayList<Integer>();
+        List<Integer> result = new ArrayList<>();
         
         
         try {
-            String sql = "SELECT OpstinaID, GradID FROM Opstina WHERE GradID=?";
+            String sql = "SELECT OpstinaID FROM Opstina WHERE GradID=?";
             PreparedStatement pst = DB.getConnection().prepareStatement(sql);
-            pst.setString(1, Integer.toString(i));
+            pst.setInt(1, i);
             ResultSet rs = pst.executeQuery();
             
             while(rs.next()){
-                int id = rs.getInt("OpstinaID");
-                result.add(id);
+                result.add(rs.getInt("OpstinaID"));
             }
             
             
@@ -140,7 +139,7 @@ public class ga140489_DistrictOperations implements DistrictOperations {
 
     @Override
     public List<Integer> getAllDistricts() {
-        List<Integer> result = new ArrayList<Integer>();
+        List<Integer> result = new ArrayList<>();
         
         
         try {
@@ -150,8 +149,7 @@ public class ga140489_DistrictOperations implements DistrictOperations {
             ResultSet rs = st.executeQuery(sql);
             
             while(rs.next()){
-                int id = rs.getInt("OpstinaID");
-                result.add(id);
+                result.add(rs.getInt("OpstinaID"));
             }
             
             

@@ -5,7 +5,7 @@
  */
 package student;
 
-import DB.DB;
+import util.DB;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -96,7 +96,7 @@ public class ga140489_UserOperations implements UserOperations{
             for(int i=0; i<userNames.length ; i++){
                 if(i!=0)sb.append(",");
                 
-                sb.append("'").append(userNames[i]).append("'");
+                sb.append(DB.addQuotes(userNames[i]));
             }
             sb.append(")");
         
@@ -128,7 +128,7 @@ public class ga140489_UserOperations implements UserOperations{
             for(int i=0; i<strings.length ; i++){
                 if(i!=0)sb.append(",");
                 
-                sb.append("'").append(strings[i]).append("'");
+                sb.append(DB.addQuotes(strings[i]));
             }
             sb.append(")");
         
@@ -147,7 +147,7 @@ public class ga140489_UserOperations implements UserOperations{
 
     @Override
     public List<String> getAllUsers() {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         
         
         try {
@@ -157,8 +157,7 @@ public class ga140489_UserOperations implements UserOperations{
             ResultSet rs = st.executeQuery(sql);
             
             while(rs.next()){
-                String rb = rs.getString("KorisnickoIme");
-                result.add(rb);
+                result.add(rs.getString("KorisnickoIme"));
             }
             
             
