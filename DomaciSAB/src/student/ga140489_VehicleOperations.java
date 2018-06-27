@@ -23,13 +23,16 @@ public class ga140489_VehicleOperations implements VehicleOperations{
     public boolean insertVehicle(String licencePlateNumber, int fuelType, BigDecimal fuelConsumtion) {
         
         try {
-            String sql = "INSERT INTO Vozilo(RegBroj, TipGoriva, Potrosnja) VALUES (?,?,?)";
-            PreparedStatement pst = DB.getConnection().prepareStatement(sql);
+            String sql = "INSERT INTO Vozilo(RegBroj, TipGoriva, Potrosnja) VALUES (" 
+                    + DB.addQuotes(licencePlateNumber) + "," + fuelType + "," + fuelConsumtion.doubleValue() +");";
+            Statement stmt = DB.getConnection().createStatement();
+            
+            /*PreparedStatement pst = DB.getConnection().prepareStatement(sql);
             pst.setString(1, licencePlateNumber);
             pst.setInt(2, fuelType);
             pst.setBigDecimal(3, fuelConsumtion);
-            
-            return (pst.executeUpdate()>0);
+            */
+            return (stmt.executeUpdate(sql)>0);
         } catch (SQLException ex) {
             Logger.getLogger(ga140489_VehicleOperations.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
@@ -110,13 +113,11 @@ public class ga140489_VehicleOperations implements VehicleOperations{
     @Override
     public boolean changeConsumption(String licensePlateNumber, BigDecimal fuelConsumption) {
         try {
-            String sql = "UPDATE Vozilo SET Potrosnja=? WHERE RegBroj=?";
+            String sql = "UPDATE Vozilo SET Potrosnja= " + fuelConsumption.doubleValue() 
+                    + " WHERE RegBroj= " + DB.addQuotes(licensePlateNumber) + ";";
             
-            PreparedStatement pst = DB.getConnection().prepareStatement(sql);
-            pst.setBigDecimal(1, fuelConsumption);
-            pst.setString(2, licensePlateNumber);
-            
-            return pst.executeUpdate()>0;
+            Statement stmt = DB.getConnection().createStatement();
+            return stmt.executeUpdate(sql)>0;
         } catch (SQLException ex) {
             Logger.getLogger(ga140489_VehicleOperations.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }

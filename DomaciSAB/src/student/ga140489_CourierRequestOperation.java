@@ -187,7 +187,7 @@ public class ga140489_CourierRequestOperation implements CourierRequestOperation
     public boolean grantRequest(String username) {
         
         try {
-            String sql = "{call dbo.spOdobriZahtevZaKurira(?,?)}";
+            String sql = "{call dbo.spOdobriZahtev(?,?)}";
             CallableStatement cstmt = DB.getConnection().prepareCall(sql);
             cstmt.setString(1,username);
             cstmt.registerOutParameter(2,java.sql.Types.INTEGER);

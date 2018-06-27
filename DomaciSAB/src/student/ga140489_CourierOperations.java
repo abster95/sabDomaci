@@ -11,8 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList
+;import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import operations.CourierOperations;
@@ -29,17 +29,26 @@ public class ga140489_CourierOperations implements CourierOperations {
     public boolean deleteCourier(String courierUserName) {
         
         try {
-            String sql = "DELETE k FROM Kurir k INNER JOIN Korisnik kor ON kor.KorisnikID=k.KorisnikID WHERE kor.KorisnickoIme=?";
+            int KorisnikID = -1;
+            String sql  = "SELECT KorisnikID FROM Korisnik WHERE KorisnickoIme = " + DB.addQuotes(courierUserName);
+            Statement stmt = DB.getConnection().createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            if(!rs.next())
+                return false;
+            KorisnikID = rs.getInt("KorisnikID");
             
-            PreparedStatement pst = DB.getConnection().prepareStatement(sql);
-            pst.setString(1, courierUserName);
+            sql = "DELETE FROM ? WHERE KorisnikID = ?";
             
-            if(pst.executeUpdate()<=0){
+            PreparedStatement pstmt = DB.getConnection().prepareStatement(sql);
+            pstmt.setString(1, "Kurir");
+            pstmt.setInt(2, KorisnikID);
+            if(pstmt.executeUpdate()<=0){
                 return false;
             }
-            
-            ga140489_UserOperations uo = new ga140489_UserOperations();
-            return uo.deleteUsers(courierUserName) > 0;
+            pstmt.clearParameters();
+            pstmt.setString(1, "Korisnik");
+            pstmt.setInt(2, KorisnikID);
+            return pstmt.executeUpdate() > 0;
             
         } catch (SQLException ex) {
             Logger.getLogger(ga140489_CourierOperations.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);

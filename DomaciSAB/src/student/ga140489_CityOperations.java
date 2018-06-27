@@ -21,13 +21,22 @@ public class ga140489_CityOperations implements CityOperations  {
     public int insertCity(String name, String postalCode) {
         int key = -1;
         try {
-            String sql = "INSERT INTO Grad(PostanskiBroj, Naziv) VALUES(?,?)";
-            PreparedStatement pst = DB.getConnection().prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+            String sql = "SELECT * FROM Grad WHERE Naziv = " + DB.addQuotes(name) 
+                    + "OR PostanskiBroj = " + DB.addQuotes(postalCode);
+            Statement stmt = DB.getConnection().createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            if(rs.next())
+                return key;
             
-            pst.setString(1, postalCode);
-            pst.setString(2, name);
+            sql = "INSERT INTO Grad(Naziv, PostanskiBroj) VALUES(?,?)";
+            PreparedStatement pstmt = DB.getConnection().prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+            
+            pstmt.setString(2, postalCode);
+            pstmt.setString(1, name);
+            
+            pstmt.executeUpdate();
 
-            ResultSet keys = pst.getGeneratedKeys();
+            ResultSet keys = pstmt.getGeneratedKeys();
             
             while(keys.next()){
                 key = keys.getInt(1);
@@ -56,8 +65,8 @@ public class ga140489_CityOperations implements CityOperations  {
             sb.append(")");
  
             try {
-                Statement st = DB.getConnection().createStatement();
-                result = st.executeUpdate(sb.toString());
+                Statement stmt = DB.getConnection().createStatement();
+                result = stmt.executeUpdate(sb.toString());
             } catch (SQLException ex) {
                 Logger.getLogger(ga140489_CityOperations.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             }
@@ -73,8 +82,8 @@ public class ga140489_CityOperations implements CityOperations  {
         boolean result= false;
         
         try {
-            Statement st = DB.getConnection().createStatement();
-            result = st.executeUpdate("DELETE FROM Grad WHERE GradID=" + i) > 0;
+            Statement stmt = DB.getConnection().createStatement();
+            result = stmt.executeUpdate("DELETE FROM Grad WHERE GradID = " + i) > 0;
         } catch (SQLException ex) {
             Logger.getLogger(ga140489_CityOperations.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
@@ -87,9 +96,9 @@ public class ga140489_CityOperations implements CityOperations  {
         List<Integer> cityList = new ArrayList<>();
         
         try {
-            Statement st = DB.getConnection().createStatement();
+            Statement stmt = DB.getConnection().createStatement();
             
-            ResultSet rs = st.executeQuery("SELECT GradID FROM Grad");
+            ResultSet rs = stmt.executeQuery("SELECT GradID FROM Grad");
             
             while(rs.next()){
                 cityList.add(rs.getInt("GradID"));

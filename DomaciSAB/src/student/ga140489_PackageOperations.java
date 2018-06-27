@@ -65,7 +65,7 @@ public class ga140489_PackageOperations implements PackageOperations {
             }
             //insert package
 
-            sql = "INSERT INTO Paket(Status,Cena,VremePrihvatanja,KurirID,ZahtevZaPrevozID) VALUES (?,?,?,?,?)";
+            sql = "INSERT INTO Paket(Status,Cena,VremePrihvatanja,KorisnikID,ZahtevZaPrevozID) VALUES (?,?,?,?,?)";
             pst = DB.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             pst.setInt(1, 0);
             pst.setBigDecimal(2, BigDecimal.ZERO);
@@ -108,7 +108,7 @@ public class ga140489_PackageOperations implements PackageOperations {
             int KurirID = 0;
 
             //check if courier not driving status
-            String sql = "SELECT k.Status AS Status, k.KurirID AS KurirID FROM Kurir k INNER JOIN Korisnik kor ON kor.KorisnikID=k.KorisnikID WHERE kor.KorisnickoIme=?";
+            String sql = "SELECT k.Status AS Status, k.KorisnikID AS KurirID FROM Kurir k INNER JOIN Korisnik kor ON kor.KorisnikID=k.KorisnikID WHERE kor.KorisnickoIme=?";
             PreparedStatement pst = DB.getConnection().prepareStatement(sql);
 
             pst.setString(1, couriersUserName);
@@ -124,7 +124,7 @@ public class ga140489_PackageOperations implements PackageOperations {
             }
 
             //insert offer
-            sql = "INSERT INTO Ponuda(Procenat,PaketID,KurirID) VALUES(?,?,?)";
+            sql = "INSERT INTO Ponuda(Procenat,PaketID,KorisnikID) VALUES(?,?,?)";
             pst = DB.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             pst.setBigDecimal(1, pricePercentage);
             pst.setInt(2, packageId);
@@ -187,7 +187,7 @@ public class ga140489_PackageOperations implements PackageOperations {
             int PaketID, KurirID, ZahtevZaPrevozID, TipPaketa, KorisnikID;
 
             //get request
-            String sql = "SELECT  pak.PaketID  AS PaketID, zzp.Tezina,zzp.TipPaketa, p.Procenat AS Procenat, p.KurirID, o1.XKord AS IzOpstinaXKord , o1.YKord AS IzOpstinaYKord, o2.XKord AS UOpstinaXKord, o2.YKord AS UOpstinaYKord , zzp.KorisnikID AS KorisnikID FROM Ponuda p INNER JOIN Paket pak ON p.PaketID=pak.PaketID \n"
+            String sql = "SELECT  pak.PaketID  AS PaketID, zzp.Tezina,zzp.TipPaketa, p.Procenat AS Procenat, p.KorisnikID, o1.XKord AS IzOpstinaXKord , o1.YKord AS IzOpstinaYKord, o2.XKord AS UOpstinaXKord, o2.YKord AS UOpstinaYKord , zzp.KorisnikID AS KorisnikID FROM Ponuda p INNER JOIN Paket pak ON p.PaketID=pak.PaketID \n"
                     + "INNER JOIN ZahtevZaPrevoz zzp ON pak.ZahtevZaPrevozID=zzp.ZahtevZaPrevozID\n"
                     + "INNER JOIN Opstina o1 ON o1.OpstinaID=zzp.IzOpstinaID\n"
                     + "INNER JOIN Opstina o2 ON o2.OpstinaID=zzp.UOpstinaID\n"
@@ -201,7 +201,7 @@ public class ga140489_PackageOperations implements PackageOperations {
                 Tezina = rs.getBigDecimal("Tezina");
                 TipPaketa = rs.getInt("TipPaketa");
                 Procenat = rs.getBigDecimal("Procenat");
-                KurirID = rs.getInt("KurirID");
+                KurirID = rs.getInt("KorisnikID");
                 IzOpstinaXKord = rs.getBigDecimal("IzOpstinaXKord");
                 IzOpstinaYKord = rs.getBigDecimal("IzOpstinaYKord");
                 UOpstinaXKord = rs.getBigDecimal("UOpstinaXKord");
@@ -216,7 +216,7 @@ public class ga140489_PackageOperations implements PackageOperations {
 
             Cena = Procenat.multiply(Cena).divide(new BigDecimal(100)).add(Cena);
 
-            sql = "UPDATE Paket SET Status=? ,Cena=? ,VremePrihvatanja=? ,KurirID=? WHERE PaketID=?";
+            sql = "UPDATE Paket SET Status=? ,Cena=? ,VremePrihvatanja=? ,KorisnikID=? WHERE PaketID=?";
             pst = DB.getConnection().prepareStatement(sql);
 
             pst.setInt(1, 1);
@@ -230,7 +230,7 @@ public class ga140489_PackageOperations implements PackageOperations {
             }
 
             //Update User number of packages sent
-            sql = "UPDATE Korisnik SET BrojPoslatihPaketa=BrojPoslatihPaketa+1 WHERE KorisnikID=?";
+            sql = "UPDATE Korisnik SET PoslatiPaketi=PoslatiPaketi+1 WHERE KorisnikID=?";
             pst = DB.getConnection().prepareStatement(sql);
             pst.setInt(1, KorisnikID);
 
@@ -495,7 +495,7 @@ public class ga140489_PackageOperations implements PackageOperations {
         List<Integer> result = new ArrayList<>();
         try {
             String sql = "SELECT p.PaketID as PaketID FROM Paket p \n"
-                    + "INNER JOIN Kurir k ON k.KurirID=p.KurirID\n"
+                    + "INNER JOIN Kurir k ON k.KorisnikID=p.KorisnikID\n"
                     + "INNER JOIN Korisnik kor ON kor.KorisnikID=k.KorisnikID\n"
                     + "WHERE kor.KorisnickoIme=? AND (p.Status IN (1,2))\n"
                     + "ORDER BY p.VremePrihvatanja";
@@ -525,7 +525,7 @@ public class ga140489_PackageOperations implements PackageOperations {
             BigDecimal Potrosnja;
 
             //get status
-            String sql = "SELECT k.KurirID as KurirID, k.Status AS Status, v.TipGoriva AS TipGoriva, v.Potrosnja AS Potrosnja FROM Kurir k\n"
+            String sql = "SELECT k.KorisnikID as KurirID, k.Status AS Status, v.TipGoriva AS TipGoriva, v.Potrosnja AS Potrosnja FROM Kurir k\n"
                     + "INNER JOIN Korisnik kor ON kor.KorisnikID=k.KorisnikID\n"
                     + "INNER JOIN Vozilo v ON k.VoziloID=v.VoziloID\n"
                     + "WHERE kor.KorisnickoIme=?";
@@ -554,7 +554,7 @@ public class ga140489_PackageOperations implements PackageOperations {
             } else if (Status == 0) {
 
                 //set courier status
-                sql = "UPDATE Kurir SET Status=1 WHERE KurirID=?";
+                sql = "UPDATE Kurir SET Status=1 WHERE KorisnikID=?";
                 pst = DB.getConnection().prepareStatement(sql);
                 pst.setInt(1, KurirID);
 
@@ -656,7 +656,7 @@ public class ga140489_PackageOperations implements PackageOperations {
 
             }
 
-            sql = "UPDATE Kurir SET Profit=Profit+? , BrojPaketa=BrojPaketa+1 WHERE KurirID=?";
+            sql = "UPDATE Kurir SET Profit=Profit+? , BrojPaketa=BrojPaketa+1 WHERE KorisnikID=?";
             pst = DB.getConnection().prepareStatement(sql);
             pst.setBigDecimal(1, Profit.setScale(6, RoundingMode.CEILING));
             pst.setInt(2, KurirID);
@@ -666,7 +666,7 @@ public class ga140489_PackageOperations implements PackageOperations {
             }
 
             if ((Status == 1) && (BrojPaketa == 1)) {
-                sql = "UPDATE Kurir SET Status=0 WHERE KurirID=?";
+                sql = "UPDATE Kurir SET Status=0 WHERE KorisnikID=?";
                 pst = DB.getConnection().prepareStatement(sql);
                 pst.setInt(1, KurirID);
 
